@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="import" href="navbar.html">
 </head>
 <body>
+    
+    <swg-nav></swg-nav>
 
-<h1>Hello World!</h1>
-<p>This is a constuction site for Seth Gilbert's website. Come back soon to check on the progress.</p>
+    <h1>Hello World!</h1>
+    <p>This is a constuction site for Seth Gilbert's website. Come back soon to check on the progress.</p>
+    
+    <h3>TODO</h3>
+    <ul>
+        <li>book rating component</li>
+        <li>look at jekyll</li>
+        <li>Resume page</li>
+        <li>reading list page</li>
+    </ul>
+    <span>see how the above ul is not changed by the style from the navbar component!  Go shadow-dom!</span>
 </body>
 <script>
-//var h1 = document.querySelector('h1')[0];
-
-document.addEventListener('click', function(){
-    alert('HI!');
-});
+    var h1 = document.querySelector('h1');
+    
+    
+    h1.addEventListener('click', function(){
+        alert('Hi!');
+    });
 
 
 </script>

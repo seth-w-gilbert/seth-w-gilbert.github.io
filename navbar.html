@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<template id="swg-nav">
+    <style>
+        li {
+           list-style-type: lower-alpha; 
+        }
+    </style>
+    <a href="index.html">Title</a>
+    <ul>
+        <li><a href="resume.html">Resume</a></li>
+        <li><a href="readingList.html">Reading List</a></li>
+    </ul>
+</template>
+
+<script>
+    class Nav extends HTMLElement {
+        constructor(){
+            super();
+            console.log('created navbar');
+            
+            var shadow = this.attachShadow({mode:'open'});
+            
+            var owner = document.currentScript.ownerDocument;
+            
+            var navTemplate = owner.getElementById('swg-nav');
+            shadow.appendChild(navTemplate.content.cloneNode(true));
+            
+        }
+    }
+    
+    customElements.define('swg-nav', Nav);
+
+</script>
