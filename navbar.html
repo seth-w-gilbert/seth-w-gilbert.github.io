@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <template id="swg-nav">
     <style>
-        li {
-           list-style-type: lower-alpha; 
+        #links {
+            margin: 0px;
+            padding: 5px;
+            width: 75%;
+            text-align: right;
+        }
+        #container {
+            width: 100%;
+            display: flex;
+            background-color: darkslateblue;
+            color: white;
+        }
+        #title {
+            width: 15%;
+            padding: 5px;;
+        }
+        #icon {
+            width: 10%;
+            padding: 5px;
         }
     </style>
-    <a href="index.html">Title</a>
-    <ul>
-        <li><a href="resume.html">Resume</a></li>
-        <li><a href="readingList.html">Reading List</a></li>
-    </ul>
+    <div id="container">
+    
+    
+        <span id="title"><slot name="title"></slot></span>
+
+        <span id="links">
+            <slot id="slot_id"></slot>
+        </span>
+        
+        <span id="icon"><slot name="icon"></slot></span>
+        
+    </div>
+	
 </template>
+
+
+
+
 
 <script>
     class Nav extends HTMLElement {
@@ -23,7 +52,14 @@
             var owner = document.currentScript.ownerDocument;
             
             var navTemplate = owner.getElementById('swg-nav');
-            shadow.appendChild(navTemplate.content.cloneNode(true));
+            var element = shadow.appendChild(navTemplate.content.cloneNode(true));
+            
+            var links = shadow.getElementById('links');
+            console.log(links);
+            console.log(links.childNodes[1]);
+            console.log(links.childNodes[1]);
+            
+            console.log(shadow.getElementById('slot_id'));
             
         }
     }
