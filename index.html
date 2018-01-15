@@ -1,49 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="import" href="navbar.html">
+    <script src="js/navbar.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <style>
-        swg-nav a {
-            color:inherit;
-            margin-left: 5px;
-            margin-right: 5px;
-        }
-        body {
-            margin: 0px;
-        }
-    </style>
-    <swg-nav>
-        <a href="index.html" slot="title" style="color:inherit;">Title</a>
-        <a href="reading.html">Reading List</a>
-        <a href="resume.html">Resume</a>
-        <span slot="icon" style="float:right;">&#10700;</span>
-    </swg-nav>
+    <script>
+        document.body.appendChild(navbar);
+    </script>
 
     <h1>Hello World!</h1>
     <p>This is a constuction site for Seth Gilbert's website. Come back soon to check on the progress.</p>
     
     <h3>TODO</h3>
     <ul>
-        <li>book rating component</li>
-        <li>navbar component</li>
+        <li>book rating</li>
+        <li>navbar</li>
         <li>Resume page</li>
-        <li>Footer component</li>
+        <li>Footer</li>
     </ul>
-    <span>see how the above ul is not changed by the style from the navbar component!  Go shadow-dom!</span>
+
 </body>
-<script>
-    if(!window.customElements){
-        alert('For the best results, view the page on Opera or Chrome.')
-    }
-    var h1 = document.querySelector('h1');
-    
-    
-    h1.addEventListener('click', function(){
-        alert('Hi!');
-    });
 
-
-</script>
 </html>
