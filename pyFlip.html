@@ -3,15 +3,21 @@
 <head>
     <title>Flips</title>
     <script src="js/navbar.js"></script>
-    <script src="js/flipsy.js"></script>
+    <script src="Brython-3.4.0/brython.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body onload="brython()">
     
-    <script>
+    <script type="text/javascript">
         document.body.appendChild(navbar);
-        addSelected("flipsy");
+        addSelected("pyFlip");
     </script>
+    
+    <button id="click-button">Click Me!</button>
+    <script type="text/python">
+    
+    </script>
+    
     
     <div class="grid-container">
         <div></div>
@@ -20,9 +26,12 @@
     </div>
     
     
-    
 </body>
-<script>
-    createBoard();
+<script type="text/python">
+from browser import document, alert
+
+def createBoard():
+    
+
 </script>
 </html>
