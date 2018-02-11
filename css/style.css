@@ -94,3 +94,31 @@ body {
     grid-template-rows: auto;
 }
 
+/*pdf styles*/
+#pdfContainer {
+    display: inline-block;
+    position: relative;
+    width:100%;
+}
+#pdfDummy {
+    margin-top: 134%;
+}
+#pdf {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.resume-grid {
+    padding-top: 25px;
+    display: grid;
+    grid-template-columns: 5% 90% 5%;
+    grid-template-rows: auto;
+}
+@media only screen and (min-width: 912px) {
+    .resume-grid {
+        grid-template-columns: 20% 60% 20%;
+    }
+}
+
