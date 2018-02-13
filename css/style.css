@@ -80,6 +80,7 @@ body {
     border-radius: 100%;
     z-index:2;
     box-sizing: border-box;
+    transition: transform .2s linear;
 }
 
 #game-board {
@@ -90,39 +91,21 @@ body {
 .grid-container {
     padding-top: 25px;
     display: grid;
-    grid-template-columns: 15% 70% 15%;
+    grid-template-columns: 20% 60% 20%;
     grid-template-rows: auto;
 }
 
-/*pdf styles*/
-#pdfContainer {
-    display: inline-block;
-    position: relative;
-    width:100%;
+.book-review {
+    background-color: lightsteelblue;
+    border-radius: 3px;
+    margin: 2%;
+    border: solid black 1px;
 }
-#pdfDummy {
-    margin-top: 134%;
+.book-review > span {
+    padding-left: 2%;
 }
-#pdf {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-.resume-grid {
-    padding-top: 25px;
-    display: grid;
-    grid-template-columns: 5% 90% 5%;
-    grid-template-rows: auto;
-}
+
 @media only screen and (min-width: 912px) {
-    .resume-grid {
-        grid-template-columns: 20% 60% 20%;
-    }
-}
-
-@media only screen and (min-width: 768px) {
     .grid-container {
         grid-template-columns: 30% 40% 30%;
     }

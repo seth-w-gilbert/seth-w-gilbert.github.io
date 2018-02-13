@@ -56,12 +56,6 @@ function createBoard(){
                         isWhiteTurn = !isWhiteTurn;
                     } else {
                         //animate that the piece cannot be placed.
-                        if(!piece.animationend){
-                            piece.animationend = function(){
-                                piece.classList.remove('no-flips');
-                            }
-                            piece.addEventListener('animationend', piece.animationend, false);
-                        }
                         piece.classList.add('no-flips');
                     }
                     
@@ -71,6 +65,12 @@ function createBoard(){
             
             var piece = document.createElement('div');
             piece.classList.add('game-piece');
+            
+            piece.animationend = function(){
+                piece.classList.remove('no-flips');
+            }
+            piece.addEventListener('animationend', piece.animationend, false);
+            
             if(boardRep[i][j] == 'w'){
                 piece.classList.add('piece-white');
                 square.style.cursor = 'default';
@@ -245,17 +245,24 @@ function flipOne(char, x, y){
 //    console.log(square);
     boardRep[y][x] = char;
     var piece = square.childNodes[0];
-    if(char == 'w'){
-        piece.classList.remove('piece-black');
-        piece.classList.add('piece-white');
-        blackCount -= 1;
-        whiteCount += 1;
-    } else {
-        piece.classList.remove('piece-white');
-        piece.classList.add('piece-black');
-        whiteCount -= 1;
-        blackCount += 1;
-    }
+    
+    piece.addEventListener('transitionend', function(){
+        if(char == 'w'){
+            piece.classList.remove('piece-black');
+            piece.classList.add('piece-white');
+            blackCount -= 1;
+            whiteCount += 1; 
+        }  else {
+            piece.classList.remove('piece-white');
+            piece.classList.add('piece-black');
+            whiteCount -= 1;
+            blackCount += 1;
+        }
+        this.style.transform = 'rotateY(180deg)';
+    });
+    
+    piece.style.transform = "rotateY(90deg)";
+    
 }
 
 function updateScores(){
