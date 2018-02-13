@@ -82,15 +82,15 @@ body {
     box-sizing: border-box;
 }
 
-#game-board: {
-    grid-row: 2;
-    grid-column: 1 / 4;
+#game-board {
+    border-style: double;
+    border-width: 10px;
 }
 
 .grid-container {
     padding-top: 25px;
     display: grid;
-    grid-template-columns: 10% 80% 10%;
+    grid-template-columns: 15% 70% 15%;
     grid-template-rows: auto;
 }
 
@@ -126,5 +126,23 @@ body {
     .grid-container {
         grid-template-columns: 30% 40% 30%;
     }
+}
+
+/*annimations*/
+@keyframes flashred {
+    0% {
+        background-color: gray;
+    }
+    50% {
+        background-color: rgba(255,0,0,.5);
+    }
+    100% {
+        background-color: gray;
+    }
+}
+
+.no-flips {
+    animation-name: flashred;
+    animation-duration: 0.5s;
 }
 
