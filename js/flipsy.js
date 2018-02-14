@@ -37,14 +37,16 @@ function createBoard(){
                     
                     //must flip at least one piece.
                     if(numFlipped > 0){
-                            if(isWhiteTurn){
+                        if(isWhiteTurn){
                             piece.classList.add('piece-white');
                             boardRep[this.dataset.y][this.dataset.x] = 'w';
-                            whiteCount++;
+                            whiteCount += numFlipped + 1;
+                            blackCount -= numFlipped;
                         } else {
                             piece.classList.add('piece-black');
                             boardRep[this.dataset.y][this.dataset.x] = 'b';
-                            blackCount++;
+                            blackCount += numFlipped + 1;
+                            whiteCount -= numFlipped;
                         }
 
                         this.appendChild(piece);
@@ -56,6 +58,13 @@ function createBoard(){
                         isWhiteTurn = !isWhiteTurn;
                     } else {
                         //animate that the piece cannot be placed.
+                        
+                        if(!piece.annimationend){
+                            piece.animationend = function(){
+                                piece.classList.remove('no-flips');
+                            }
+                            piece.addEventListener('animationend', piece.animationend, false);
+                        }
                         piece.classList.add('no-flips');
                     }
                     
@@ -65,11 +74,6 @@ function createBoard(){
             
             var piece = document.createElement('div');
             piece.classList.add('game-piece');
-            
-            piece.animationend = function(){
-                piece.classList.remove('no-flips');
-            }
-            piece.addEventListener('animationend', piece.animationend, false);
             
             if(boardRep[i][j] == 'w'){
                 piece.classList.add('piece-white');
@@ -92,21 +96,21 @@ function createBoard(){
     }
 }
 
-function flipBetween(isWhiteTurn, x, y){
-    var char = isWhiteTurn ? 'w' : 'b';
+function flipBetween(whiteTurn, x, y){
+    var color = whiteTurn ? 'w' : 'b';
     var xPos;
     var yPos;
     var numFlipped = 0;
     
     //flip to the left
     xPos = x-1;
-    while(xPos > -1 && boardRep[y][xPos] != char && boardRep[y][xPos] != ''){
+    while(xPos > -1 && boardRep[y][xPos] != color && boardRep[y][xPos] != ''){
         xPos--;
     }
-    if(xPos != -1 && boardRep[y][xPos] == char){
+    if(xPos != -1 && boardRep[y][xPos] == color){
         //flip all in between.
         for(var i=(xPos+1); i < x; i++){
-            flipOne(char, i, y);
+            flipOne(color, i, y);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -114,13 +118,13 @@ function flipBetween(isWhiteTurn, x, y){
     
     //flip to the right.
     xPos = x+1;
-    while(xPos < 8 && boardRep[y][xPos] != char && boardRep[y][xPos] != ''){
+    while(xPos < 8 && boardRep[y][xPos] != color && boardRep[y][xPos] != ''){
         xPos++;
     }
-    if(xPos != 8 && boardRep[y][xPos] == char){
+    if(xPos != 8 && boardRep[y][xPos] == color){
         //flip all in between.
         for(var i = (xPos-1); i > x; i--){
-            flipOne(char, i, y);
+            flipOne(color, i, y);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -128,13 +132,13 @@ function flipBetween(isWhiteTurn, x, y){
     
     //flip above
     yPos = y-1;
-    while(yPos > -1 && boardRep[yPos][x] != char && boardRep[yPos][x] != ''){
+    while(yPos > -1 && boardRep[yPos][x] != color && boardRep[yPos][x] != ''){
         yPos--;
     }
-    if(yPos != -1 && boardRep[yPos][x] == char){
+    if(yPos != -1 && boardRep[yPos][x] == color){
         //flip all in between
         for(var i=(yPos+1); i < y; i++){
-            flipOne(char, x, i);
+            flipOne(color, x, i);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -142,13 +146,13 @@ function flipBetween(isWhiteTurn, x, y){
     
     //flip below
     yPos = y+1;
-    while((yPos < 8) && (boardRep[yPos][x] != char) && (boardRep[yPos][x] != '')){
+    while((yPos < 8) && (boardRep[yPos][x] != color) && (boardRep[yPos][x] != '')){
         yPos++;
     }
-    if(yPos != 8 && boardRep[yPos][x] == char){
+    if(yPos != 8 && boardRep[yPos][x] == color){
         //flip all in between
         for(var i=(yPos-1); i > y; i--){
-            flipOne(char, x, i);
+            flipOne(color, x, i);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -158,16 +162,16 @@ function flipBetween(isWhiteTurn, x, y){
     //flip up and left diagonal
     xPos = x-1;
     yPos = y-1;
-    while(xPos > -1 && yPos > -1 && boardRep[yPos][xPos] != char && boardRep[yPos][xPos] != ''){
+    while(xPos > -1 && yPos > -1 && boardRep[yPos][xPos] != color && boardRep[yPos][xPos] != ''){
         xPos--;
         yPos--;
     }
-    if(yPos != -1 && xPos != -1 && boardRep[yPos][xPos] == char){
+    if(yPos != -1 && xPos != -1 && boardRep[yPos][xPos] == color){
         //flip all in between
         xPos += 1;
         yPos += 1;
         while(yPos < y && xPos < x){
-            flipOne(char, xPos, yPos);
+            flipOne(color, xPos, yPos);
             xPos += 1;
             yPos += 1;
             numFlipped++;
@@ -178,16 +182,16 @@ function flipBetween(isWhiteTurn, x, y){
     //flip up and right diagonal
     xPos = x+1;
     yPos = y-1;
-    while(xPos < 8 && yPos > -1 && boardRep[yPos][xPos] != char && boardRep[yPos][xPos] != ''){
+    while(xPos < 8 && yPos > -1 && boardRep[yPos][xPos] != color && boardRep[yPos][xPos] != ''){
         xPos++;
         yPos--;
     }
-    if(yPos != -1 && xPos != 8 && boardRep[yPos][xPos] == char){
+    if(yPos != -1 && xPos != 8 && boardRep[yPos][xPos] == color){
         //flip all in between
         xPos -= 1;
         yPos += 1;
         while(yPos < y && xPos > x){
-            flipOne(char, xPos, yPos);
+            flipOne(color, xPos, yPos);
             numFlipped++;
             xPos -= 1;
             yPos += 1;
@@ -198,16 +202,16 @@ function flipBetween(isWhiteTurn, x, y){
     //flip down and left diagonal
     xPos = x-1;
     yPos = y+1;
-    while(xPos > -1 && yPos < 8 && boardRep[yPos][xPos] != char && boardRep[yPos][xPos] != ''){
+    while(xPos > -1 && yPos < 8 && boardRep[yPos][xPos] != color && boardRep[yPos][xPos] != ''){
         xPos--;
         yPos++;
     }
-    if(yPos != 8 && xPos != -1 && boardRep[yPos][xPos] == char){
+    if(yPos != 8 && xPos != -1 && boardRep[yPos][xPos] == color){
         //flip all in between
         xPos += 1;
         yPos -= 1;
         while(yPos > y && xPos < x){
-            flipOne(char, xPos, yPos);
+            flipOne(color, xPos, yPos);
             numFlipped++;
             xPos += 1;
             yPos -= 1;
@@ -218,16 +222,16 @@ function flipBetween(isWhiteTurn, x, y){
     //flip down and right diagonal
     xPos = x+1;
     yPos = y+1;
-    while((xPos < 8 && yPos < 8) && boardRep[yPos][xPos] != char && boardRep[yPos][xPos] != ''){
+    while((xPos < 8 && yPos < 8) && boardRep[yPos][xPos] != color && boardRep[yPos][xPos] != ''){
         xPos++;
         yPos++;
     }
-    if(yPos != 8 && xPos != 8 && boardRep[yPos][xPos] == char){
+    if(yPos != 8 && xPos != 8 && boardRep[yPos][xPos] == color){
         //flip all in between
         xPos -= 1;
         yPos -= 1;
         while(yPos > y && xPos > x){
-            flipOne(char, xPos, yPos);
+            flipOne(color, xPos, yPos);
             numFlipped++;
             xPos -= 1;
             yPos -= 1;
@@ -240,29 +244,34 @@ function flipBetween(isWhiteTurn, x, y){
     return numFlipped;
 }
 
-function flipOne(char, x, y){
+function flipOne(color, x, y){
     var square = document.querySelector('[data-x="' + x + '"][data-y="' + y + '"]');
 //    console.log(square);
-    boardRep[y][x] = char;
+    var prevChar = boardRep[y][x];
+    boardRep[y][x] = color;
     var piece = square.childNodes[0];
+    console.log('outside: ' + prevChar);
     
-    piece.addEventListener('transitionend', function(){
-        if(char == 'w'){
-            piece.classList.remove('piece-black');
-            piece.classList.add('piece-white');
-            blackCount -= 1;
-            whiteCount += 1; 
-        }  else {
-            piece.classList.remove('piece-white');
-            piece.classList.add('piece-black');
-            whiteCount -= 1;
-            blackCount += 1;
-        }
-        this.style.transform = 'rotateY(180deg)';
-    });
+    piece.color = color;
     
+    if(!piece.transitionend){
+        piece.transitionend = function(){
+            console.log('inside: ' + prevChar);
+            if(this.color == 'w'){
+                piece.classList.remove('piece-black');
+                piece.classList.add('piece-white');
+            }  else {
+                piece.classList.remove('piece-white');
+                piece.classList.add('piece-black');
+            }
+            this.style.transform = 'rotateY(180deg)';
+        };
+        
+        piece.addEventListener('transitionend', piece.transitionend);
+    }
+    
+    //start the annimation
     piece.style.transform = "rotateY(90deg)";
-    
 }
 
 function updateScores(){
