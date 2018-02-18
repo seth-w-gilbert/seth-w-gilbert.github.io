@@ -1,3 +1,6 @@
+//TODO  [] smarter deeper AI
+//      [] Alpha Beta Pruning
+
 var isWhiteTurn = false;
 
 var boardRep = [['','','','','','','',''],
@@ -26,7 +29,6 @@ function createBoard(){
             square.dataset.y = i;
             square.dataset.x = j;
             square.addEventListener('click', function(){
-//                console.log(this.isPopulated);
                 if(!this.isPopulated){
 
                     //add the correct classes and edit the underlying array.
@@ -53,9 +55,14 @@ function createBoard(){
                         this.style.cursor = "default";
 
                         updateScores();
+                        
                         //change turn
-                        //TODO only change turn if other player can move.
-                        isWhiteTurn = !isWhiteTurn;
+                        if(canMove(!isWhiteTurn)){
+                            isWhiteTurn = !isWhiteTurn;
+                            if(isWhiteTurn){
+                                setTimeout(makeMove, 1000);
+                            }
+                        }
                     } else {
                         //animate that the piece cannot be placed.
                         
@@ -68,6 +75,9 @@ function createBoard(){
                         piece.classList.add('no-flips');
                     }
                     
+                }
+                if(!(canMove(isWhiteTurn) || canMove(!isWhiteTurn))){
+                    alert('game over');
                 }
                 updateTurn();
             });
@@ -96,7 +106,18 @@ function createBoard(){
     }
 }
 
-function flipBetween(whiteTurn, x, y){
+function canMove(whiteTurn){
+    for(var y=0; y < boardRep.length; y++){
+        for(var x=0; x<boardRep[y].length; x++){
+            if((flipBetween(whiteTurn, x, y, true) > 0) && boardRep[y][x] == ''){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function flipBetween(whiteTurn, x, y, isTest){
     var color = whiteTurn ? 'w' : 'b';
     var xPos;
     var yPos;
@@ -110,7 +131,7 @@ function flipBetween(whiteTurn, x, y){
     if(xPos != -1 && boardRep[y][xPos] == color){
         //flip all in between.
         for(var i=(xPos+1); i < x; i++){
-            flipOne(color, i, y);
+            if(!isTest) flipOne(color, i, y);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -124,7 +145,7 @@ function flipBetween(whiteTurn, x, y){
     if(xPos != 8 && boardRep[y][xPos] == color){
         //flip all in between.
         for(var i = (xPos-1); i > x; i--){
-            flipOne(color, i, y);
+            if(!isTest) flipOne(color, i, y);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -138,7 +159,7 @@ function flipBetween(whiteTurn, x, y){
     if(yPos != -1 && boardRep[yPos][x] == color){
         //flip all in between
         for(var i=(yPos+1); i < y; i++){
-            flipOne(color, x, i);
+            if(!isTest) flipOne(color, x, i);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -152,7 +173,7 @@ function flipBetween(whiteTurn, x, y){
     if(yPos != 8 && boardRep[yPos][x] == color){
         //flip all in between
         for(var i=(yPos-1); i > y; i--){
-            flipOne(color, x, i);
+            if(!isTest) flipOne(color, x, i);
             numFlipped++;
         }
         //console.log(boardRep);
@@ -171,7 +192,7 @@ function flipBetween(whiteTurn, x, y){
         xPos += 1;
         yPos += 1;
         while(yPos < y && xPos < x){
-            flipOne(color, xPos, yPos);
+            if(!isTest) flipOne(color, xPos, yPos);
             xPos += 1;
             yPos += 1;
             numFlipped++;
@@ -191,7 +212,7 @@ function flipBetween(whiteTurn, x, y){
         xPos -= 1;
         yPos += 1;
         while(yPos < y && xPos > x){
-            flipOne(color, xPos, yPos);
+            if(!isTest) flipOne(color, xPos, yPos);
             numFlipped++;
             xPos -= 1;
             yPos += 1;
@@ -211,7 +232,7 @@ function flipBetween(whiteTurn, x, y){
         xPos += 1;
         yPos -= 1;
         while(yPos > y && xPos < x){
-            flipOne(color, xPos, yPos);
+            if(!isTest) flipOne(color, xPos, yPos);
             numFlipped++;
             xPos += 1;
             yPos -= 1;
@@ -231,7 +252,7 @@ function flipBetween(whiteTurn, x, y){
         xPos -= 1;
         yPos -= 1;
         while(yPos > y && xPos > x){
-            flipOne(color, xPos, yPos);
+            if(!isTest) flipOne(color, xPos, yPos);
             numFlipped++;
             xPos -= 1;
             yPos -= 1;
@@ -239,7 +260,9 @@ function flipBetween(whiteTurn, x, y){
         //console.log(boardRep);
     }
     
-    console.log(boardRep);
+    if(!isTest){
+        console.log(boardRep);       
+    }
     
     return numFlipped;
 }
@@ -250,21 +273,27 @@ function flipOne(color, x, y){
     var prevChar = boardRep[y][x];
     boardRep[y][x] = color;
     var piece = square.childNodes[0];
-    console.log('outside: ' + prevChar);
+//    console.log('outside: ' + prevChar);
     
     piece.color = color;
     
     if(!piece.transitionend){
         piece.transitionend = function(){
-            console.log('inside: ' + prevChar);
-            if(this.color == 'w'){
-                piece.classList.remove('piece-black');
-                piece.classList.add('piece-white');
-            }  else {
-                piece.classList.remove('piece-white');
-                piece.classList.add('piece-black');
+            if(!this.halfway){
+//                console.log('inside: ' + prevChar);
+                if(this.color == 'w'){
+                    piece.classList.remove('piece-black');
+                    piece.classList.add('piece-white');
+                }  else {
+                    piece.classList.remove('piece-white');
+                    piece.classList.add('piece-black');
+                }
+                this.style.transform = 'rotateY(180deg)';
+                this.halfway = true;
+            } else {
+                this.halfway = false;
             }
-            this.style.transform = 'rotateY(180deg)';
+            
         };
         
         piece.addEventListener('transitionend', piece.transitionend);
@@ -274,6 +303,50 @@ function flipOne(color, x, y){
     piece.style.transform = "rotateY(90deg)";
 }
 
+//is white turn, generate AI move.
+function makeMove(){
+    var numFlipped = 0;
+    var tempFlipped = 0;
+    var pos = {x: 0, y: 0};
+    
+    for(var y=0; y < boardRep.length; y++){
+        for(var x=0; x < boardRep[0].length; x++){
+            
+            if(boardRep[y][x] == ''){
+               tempFlipped = flipBetween(true, x, y, true);
+                if(tempFlipped > numFlipped){
+                    //keep track of the max, and its position.
+                    numFlipped = tempFlipped;
+                    pos.x = x;
+                    pos.y = y;
+                } 
+            }
+            
+        }
+    }
+    
+    var square = document.querySelector('[data-x="' + pos.x + '"][data-y="' + pos.y + '"]');
+    boardRep[pos.y][pos.x] = 'w';
+    
+    var piece = square.childNodes[0];
+    piece.classList.add('piece-white');
+    square.isPopulated = true;
+    
+    console.log(pos);
+    flipBetween(true, pos.x, pos.y, false);
+    whiteCount += (numFlipped + 1);
+    blackCount -= (numFlipped);
+    updateScores();
+    isWhiteTurn = !isWhiteTurn;
+    updateTurn();
+    
+    if(!(canMove(isWhiteTurn) || canMove(!isWhiteTurn))){
+        alert('game over');
+    }
+
+}
+
+//aesthetic updaates.
 function updateScores(){
     document.getElementById('white-score').innerHTML = document.getElementById('white-score').innerHTML.replace(/\d+/, whiteCount);
     document.getElementById('black-score').innerHTML = document.getElementById('black-score').innerHTML.replace(/\d+/, blackCount);
