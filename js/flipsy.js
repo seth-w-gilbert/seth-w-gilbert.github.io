@@ -29,8 +29,8 @@ function createBoard(){
             square.dataset.y = i;
             square.dataset.x = j;
             square.addEventListener('click', function(){
+                console.log(this.isPopulated);
                 if(!this.isPopulated){
-
                     //add the correct classes and edit the underlying array.
                     var piece = this.getElementsByClassName('game-piece')[0];
                     
@@ -53,6 +53,7 @@ function createBoard(){
 
                         this.appendChild(piece);
                         this.style.cursor = "default";
+                        this.isPopulated = true;
 
                         updateScores();
                         
@@ -331,6 +332,7 @@ function makeMove(){
     var piece = square.childNodes[0];
     piece.classList.add('piece-white');
     square.isPopulated = true;
+    square.style.cursor = 'default';
     
     console.log(pos);
     flipBetween(true, pos.x, pos.y, false);
@@ -346,7 +348,7 @@ function makeMove(){
 
 }
 
-//aesthetic updaates.
+//aesthetic updates.
 function updateScores(){
     document.getElementById('white-score').innerHTML = document.getElementById('white-score').innerHTML.replace(/\d+/, whiteCount);
     document.getElementById('black-score').innerHTML = document.getElementById('black-score').innerHTML.replace(/\d+/, blackCount);
