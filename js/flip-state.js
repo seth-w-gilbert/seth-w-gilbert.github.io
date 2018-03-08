@@ -71,6 +71,9 @@ function FlipState(b){
         return child;
     }
 
+    //TODO game is over when there are no more moves for either player.
+    //from there a win can be decided.
+    //fix these three methods.
     this.isComputerWinner = function(){
       return !this.hasMoreChildren() && (this.staticEvaluation() > 0);
     }
@@ -89,13 +92,13 @@ function FlipState(b){
     this.staticEvaluation = function(){
       var count = 0;
       this.board.forEach((row) => {
-          row.forEach((c) => {
-              if(c === WHITE){
-                count += 1;
-              } else if(c === BLACK){
-                count -= 1;
-              }
-          });
+        row.forEach((c) => {
+          if(c === WHITE){
+            count += 1;
+          } else if(c === BLACK){
+            count -= 1;
+          }
+        });
       });
 
       return count;
@@ -155,9 +158,7 @@ function FlipState(b){
     this.placeUserMove = function(x, y){
       this.board[y][x] = BLACK;
       this.whitePlayed = false;
-      //TODO edit the visuals? how far should I go?
     }
-
 
     //helper methods.
     this.flipOne = function(x,y){
