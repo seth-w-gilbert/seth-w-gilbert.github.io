@@ -5,37 +5,38 @@
     <script src="js/navbar.js"></script>
     <script src="js/flipsy.js"></script>
     <script src="js/flip-state.js"></script>
+    <script src="js/minimax.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-    
+
     <script>
         document.body.appendChild(navbar);
         addSelected("flipsy");
     </script>
-    
+
     <div class="grid-container">
-        
+
 <!--        left column-->
         <div style="padding:10px;">
             <h3>AI Score (White)</h3>
             <h1 id="white-score">2</h1>
         </div>
-        
+
 <!--        center column-->
         <div>
             <div id="game-board"></div>
             <h4 id="turn-indic">Black's Turn</h4>
         </div>
-        
+
 <!--        right column-->
         <div style="text-align:right;padding:10px;">
             <h3>Your Score (Black)</h3>
             <h1 id="black-score">2</h1>
         </div>
     </div>
-    
+
 </body>
 <script>
     createBoard();
