@@ -332,7 +332,7 @@ function FlipState(b){
 
 
 //main
-var board =[['','','','','','','',''],
+/*var board =[['','','','','','','',''],
             ['','','','','','','',''],
             ['','','','','','','',''],
             ['','','','w','b','','',''],
@@ -355,4 +355,4 @@ while(state.hasMoreChildren()){
   i++;
 }
 
-console.log('number of children: ' + i);
+console.log('number of children: ' + i);*/

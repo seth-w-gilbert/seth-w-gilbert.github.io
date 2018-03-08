@@ -1,11 +1,11 @@
 //logic for choosing the best move.
 //Alpha beta pruning to speed things up.
 
-function minimax(levels){
+function Minimax(levels){
   this.maxlevels = levels;
 
   //return: (x,y), flip-state, ...
-  //inputs: fliip state that we need to find the next move for.
+  //inputs: FlipState
   this.generateNextMove = function(currentProblem) {
     var bestBoard = null;
 
@@ -26,24 +26,26 @@ function minimax(levels){
   }
 
   //TODO alpha beta.
+  //inputs: flipstate, current level.
   this.recursiveMinimax = function(currentProblem, level) {
     //base case
-    if(level == this.maxlevels || currentProblem.isComputerWinner() || currentProblem.isUserWinner() || currentProblem.isDraw()){
+    if((level == this.maxlevels) || currentProblem.isComputerWinner() || currentProblem.isUserWinner() || currentProblem.isDraw()){
       return currentProblem.staticEvaluation();
 
     //recursive case
     } else {
       var maximizing = (level % 2 == 0);
       var bestWeight;
+      var cpCopy = currentProblem.createCopy(currentProblem); //make a copy so it doesn't use up the actual children.
       if(maximizing){
         bestWeight = -99999;
       } else {
         bestWeight = 99999;
       }
 
-      while(currentProblem.hasMoreChildren()) {
-        var child = currentProblem.nextChild();
-        var weight = this.recursiveMinimax();
+      while(cpCopy.hasMoreChildren()) {
+        var child = cpCopy.nextChild();
+        var weight = this.recursiveMinimax(child, level+1);
 
         if(maximizing){
           if(weight > bestWeight){
@@ -62,4 +64,20 @@ function minimax(levels){
 }
 
 //main
-//TODO testing.
+var board =[['','','','','','','',''],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['','','','w','b','','',''],
+            ['','','','b','w','','',''],
+            ['','','','','','','',''],
+            ['','','','','','','',''],
+            ['','','','','','','','']];
+
+var minimax = new Minimax(3);
+var startState = new FlipState(board);
+
+var currentState = startState;
+for(var i = 0; i < 10; i++){
+  currentState = minimax.generateNextMove(currentState);
+  console.log(currentState.board);
+}
