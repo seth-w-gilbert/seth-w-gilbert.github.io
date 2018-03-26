@@ -21,7 +21,7 @@ function Minimax(levels){
         bestWeight = weight;
       }
     }
-
+    
     return bestBoard;
   }
 
@@ -64,7 +64,7 @@ function Minimax(levels){
 }
 
 //main
-var board =[['','','','','','','',''],
+/*var board =[['','','','','','','',''],
             ['','','','','','','',''],
             ['','','','','','','',''],
             ['','','','w','b','','',''],
@@ -81,3 +81,4 @@ for(var i = 0; i < 10; i++){
   currentState = minimax.generateNextMove(currentState);
   console.log(currentState.board);
 }
+*/

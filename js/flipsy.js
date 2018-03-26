@@ -61,7 +61,7 @@ function createBoard(){
                         if(canMove(!isWhiteTurn)){
                             isWhiteTurn = !isWhiteTurn;
                             if(isWhiteTurn){
-                                setTimeout(makeMove, 1000);
+                                setTimeout(makeMoveDeep, 1000);
                             }
                         }
                     } else {
@@ -314,7 +314,7 @@ function makeMove(){
         for(var x=0; x < boardRep[0].length; x++){
             
             if(boardRep[y][x] == ''){
-               tempFlipped = flipBetween(true, x, y, true);
+                tempFlipped = flipBetween(true, x, y, true);
                 if(tempFlipped > numFlipped){
                     //keep track of the max, and its position.
                     numFlipped = tempFlipped;
@@ -346,6 +346,40 @@ function makeMove(){
         alert('game over');
     }
 
+}
+
+function makeMoveDeep(){
+    
+    //find the move.
+    var state = new FlipState(boardRep);
+    console.log('deep');
+    
+    var mm = new Minimax(3);
+    var child = mm.generateNextMove(state);
+    var move = child.lastPlay;
+    
+    console.log(move.x + ", " + move.y);
+    
+    
+    //make the move.
+    var square = document.querySelector('[data-x="' + move.x + '"][data-y="' + move.y + '"]');
+    boardRep[move.y][move.x] = 'w';
+    
+    var piece = square.childNodes[0];
+    piece.classList.add('piece-white');
+    square.isPopulated = true;
+    square.style.cursor = 'default';
+    
+    var numFlipped = flipBetween(true, move.x, move.y, false);
+    whiteCount += (numFlipped + 1);
+    blackCount -= (numFlipped);
+    updateScores();
+    isWhiteTurn = !isWhiteTurn;
+    updateTurn();
+    
+    if(!(canMove(isWhiteTurn) || canMove(!isWhiteTurn))){
+        alert('game over');
+    }
 }
 
 //aesthetic updates.

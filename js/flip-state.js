@@ -3,11 +3,6 @@ var BLACK = 'b';
 
 function FlipState(b){
 
-    this.nextCol = 3;
-    this.nextRow = 2;
-    this.board = b; //input board representation.
-    this.whitePlayed = true;
-
     this.createCopy = function(oldState){
         copy = new FlipState([]);
         copy.nextCol = oldState.nextCol;
@@ -34,11 +29,11 @@ function FlipState(b){
 
         //switch whose move it is.
         child.whitePlayed = !this.whitePlayed;
+        
 
         //modify the child's board
         //place a piece at the next open spot
         child.play(this.nextCol, this.nextRow);
-        // child.board[this.nextRow][this.nextCol] = child.whitePlayed ? WHITE : BLACK;
 
         //set myself up to produce more feasible children.
         if(this.nextCol == 7){
@@ -47,7 +42,7 @@ function FlipState(b){
         } else {
             this.nextCol++;
         }
-        while((this.nextRow < this.board.length) && (this.nextCol < this.board[0].length) && !this.isValidMove(this.nextCol, this.nextRow)){
+        while((this.nextRow < this.board.length) && (this.nextCol < this.board[0].length) && !this.isValidMove(this.nextCol,this.nextRow)){
           if(this.nextCol == 7){
               this.nextCol = 0;
               this.nextRow += 1;
@@ -69,21 +64,6 @@ function FlipState(b){
         }
 
         return child;
-    }
-
-    //TODO game is over when there are no more moves for either player.
-    //from there a win can be decided.
-    //fix these three methods.
-    this.isComputerWinner = function(){
-      return !this.hasMoreChildren() && (this.staticEvaluation() > 0);
-    }
-
-    this.isUserWinner = function(){
-      return !this.hasMoreChildren() && (this.staticEvaluation < 0);
-    }
-
-    this.isDraw = function(){
-      return !this.hasMoreChildren() && this.staticEvaluation == 0;
     }
 
     //return how good the computer is doing.
@@ -141,6 +121,9 @@ function FlipState(b){
     this.play = function(x,y) {
       color = this.whitePlayed ? WHITE : BLACK;
       this.board[y][x] = color;
+      
+      this.lastPlay.x = x;
+      this.lastPlay.y = y;
 
       //do the flips
       this.leftFlips(x, y, color, true);
@@ -155,10 +138,10 @@ function FlipState(b){
     }
 
     //edits the board after user clicks.
-    this.placeUserMove = function(x, y){
+    /*this.placeUserMove = function(x, y){
       this.board[y][x] = BLACK;
       this.whitePlayed = false;
-    }
+    }*/
 
     //helper methods.
     this.flipOne = function(x,y){
@@ -170,7 +153,7 @@ function FlipState(b){
       var numFlipped = 0;
 
       var xPos = x-1;
-      while(xPos > -1 && board[y][xPos] != color && this.board[y][xPos] != ''){
+      while(xPos > -1 && this.board[y][xPos] != color && this.board[y][xPos] != ''){
         xPos--;
       }
       if(xPos != -1 && this.board[y][xPos] == color){
@@ -225,7 +208,7 @@ function FlipState(b){
       while((yPos < 8) && (this.board[yPos][x] != color) && (this.board[yPos][x] != '')){
         yPos++;
       }
-      if(yPos != 8 && board[yPos][x] == color){
+      if(yPos != 8 && this.board[yPos][x] == color){
         for(var i=(yPos-1); i > y; i--){
           if(flip){
             this.flipOne(x, i);
@@ -327,32 +310,20 @@ function FlipState(b){
       }
       return numFlipped;
     }
+    
+    //construction.
+    this.nextCol = 0;
+    this.nextRow = 0;
+    this.board = b; //input board representation.
+    this.whitePlayed = false;
+    this.lastPlay = {x:0, y:0};
+    
+    while((this.nextRow < this.board.length) && (this.nextCol < this.board[0].length) && !this.isValidMove(this.nextCol, this.nextRow)){
+      if(this.nextCol == 7){
+          this.nextCol = 0;
+          this.nextRow += 1;
+      } else {
+          this.nextCol += 1;
+      }
+    }
 }
-
-
-
-//main
-/*var board =[['','','','','','','',''],
-            ['','','','','','','',''],
-            ['','','','','','','',''],
-            ['','','','w','b','','',''],
-            ['','','','b','w','','',''],
-            ['','','','','','','',''],
-            ['','','','','','','',''],
-            ['','','','','','','','']];
-
-var state = new FlipState(board);
-
-var i = 0;
-while(state.hasMoreChildren()){
-  var child = state.nextChild();
-  console.log(child.board);
-  console.log('next child:');
-  console.log(child.nextChild().board);
-  //TODO this doesn't quite give back what we would expect...
-  console.log('');
-  // console.log(child.staticEvaluation();
-  i++;
-}
-
-console.log('number of children: ' + i);*/
