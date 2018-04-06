@@ -83,6 +83,21 @@ function FlipState(b){
 
       return count;
     }
+    
+    //TODO game is over when there are no more moves for either player.
+    //from there a win can be decided.
+    //fix these three methods.
+    this.isComputerWinner = function(){
+      return !this.hasMoreChildren() && (this.staticEvaluation() > 0);
+    }
+
+    this.isUserWinner = function(){
+      return !this.hasMoreChildren() && (this.staticEvaluation < 0);
+    }
+
+    this.isDraw = function(){
+      return !this.hasMoreChildren() && this.staticEvaluation == 0;
+    }
 
     //helper function
     //flip after placing move.
