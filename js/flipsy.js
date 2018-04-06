@@ -1,5 +1,5 @@
-//TODO  [] smarter deeper AI
-//      [] Alpha Beta Pruning
+//  [x] smarter deeper AI
+//  [x] Alpha Beta Pruning
 
 var isWhiteTurn = false;
 
@@ -270,18 +270,15 @@ function flipBetween(whiteTurn, x, y, isTest){
 
 function flipOne(color, x, y){
     var square = document.querySelector('[data-x="' + x + '"][data-y="' + y + '"]');
-//    console.log(square);
     var prevChar = boardRep[y][x];
     boardRep[y][x] = color;
     var piece = square.childNodes[0];
-//    console.log('outside: ' + prevChar);
     
     piece.color = color;
     
     if(!piece.transitionend){
         piece.transitionend = function(){
             if(!this.halfway){
-//                console.log('inside: ' + prevChar);
                 if(this.color == 'w'){
                     piece.classList.remove('piece-black');
                     piece.classList.add('piece-white');

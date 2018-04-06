@@ -1,8 +1,8 @@
-var navHTML =  `<a href="index.html" id="title">Seth Gilbert</a>
-
+var navHTML =  `<a href="index.html" id="title">Title</a>
                 <a id="reading" href="reading.html" class="link">Reading List</a>
-                <a id="flipsy" href="flipsy.html" class="link">Flipsy</a>
-                <a id="resume" href="files/resume.pdf" class="link" target="_blank">Resume</a>`;
+                <a id="resume" href="resume.html" class="link">Resume</a>
+                <a id="flipsy" href="flipsy.html" class="link">Flips</a>
+                <a id="pyFlip" href="pyFlip.html" class="link">Flips2</a>
 
 var navbar = document.createElement('div');
 navbar.innerHTML = navHTML;
