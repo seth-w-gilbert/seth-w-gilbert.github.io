@@ -30,7 +30,13 @@
 <script type="text/python">
 from browser import document, alert
 
+@document["click-button"].bind("click")
+def sayHi():
+    alert('hello, world')
+    
 def createBoard():
+    # TODO
+    todo = "ToDO"
     
 
 </script>
