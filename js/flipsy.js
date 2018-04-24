@@ -17,12 +17,11 @@ var blackCount = 2;
 
 function createBoard(){
     var square;
-    var board = new Array(8);
     var boardDiv = document.getElementById('game-board');
     
     
     for(var i=0; i < 8; i++){
-        board[i] = new Array(8);
+        //board[i] = new Array(8);
         for(var j=0; j < 8; j++){
             square = document.createElement('div');
             square.classList.add('game-square');
@@ -98,7 +97,6 @@ function createBoard(){
             }
             square.appendChild(piece);
             
-            board[i][j] = square;
             boardDiv.appendChild(square);
         }
         var newLine = document.createElement('br');
