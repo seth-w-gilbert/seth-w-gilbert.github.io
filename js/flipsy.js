@@ -19,9 +19,7 @@ function createBoard(){
     var square;
     var boardDiv = document.getElementById('game-board');
     
-    
     for(var i=0; i < 8; i++){
-        //board[i] = new Array(8);
         for(var j=0; j < 8; j++){
             square = document.createElement('div');
             square.classList.add('game-square');

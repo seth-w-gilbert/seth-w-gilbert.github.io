@@ -56,6 +56,8 @@ body {
     box-sizing: border-box;
 }
 
+
+
 .game-square:after {
     content: "";
     display: block;
@@ -83,9 +85,13 @@ body {
     transition: transform .2s linear;
 }
 
-#game-board {
+#game-board, #game-board-py{
     border-style: double;
     border-width: 10px;
+}
+
+#game-board-py{
+    border-color: #282828;
 }
 
 .grid-container {
@@ -129,3 +135,13 @@ body {
     animation-duration: 0.5s;
 }
 
+/*python styles*/
+#game-board-py > .game-square {
+    position: relative;
+    background-color: #7395AE;
+    width: 12.5%;
+    border: 1px #446984 solid;
+    cursor: pointer;
+    float: left;
+    box-sizing: border-box;
+}

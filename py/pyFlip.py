@@ -1,9 +1,19 @@
-from browser import document, html, alert
+from browser import document, html, alert, console
+
+boardRep = [['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','w','b','','',''],
+                ['','','','b','w','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','','']]
+
 
 def createBoard():
     #TODO initialize the board with the 4 starting pieces.
     
-    boardDiv = document["game-board"]
+    boardDiv = document["game-board-py"]
     
     for i in range(0, 8):
         
@@ -11,17 +21,34 @@ def createBoard():
             square = html.DIV(Class="game-square")
             square.setAttribute("data-x", i)
             square.setAttribute("data-y", j)
+            
+            populated = bool(boardRep[j][i])
+            if(populated):
+                piece = html.DIV(Class="game-piece")
+                if(boardRep[j][i] == 'w'):
+                    piece.setAttribute("class", piece.getAttribute("class") + " piece-white")
+                else:
+                    piece.setAttribute("class", piece.getAttribute("class") + " piece-black")
+                square <= piece
+            
+            square.setAttribute('data-populated', populated)
+            
             square.bind("click", squareClick)
             boardDiv <= square
             
-            
-            
 
 def squareClick(event):
-    # TODO do something with the coordinates.
-    x = event.target.getAttribute("data-x")
-    y = event.target.getAttribute("data-y")
-    alert("(" + x + ", " + y + ")")
+    # TODO if not populated, place piece, depending on whose turn it is.
+    square = event.target
+    x = int(square.dataset.x)
+    y = int(square.dataset.y)
+    populated = square.dataset.populated == "True"
+    
+    console.log(str(boardRep[y][x]))
+    console.log('populated: ' + str(populated))
+    alert(f'({x:d}, {y:d})')
+    
+    console.log(square.dataset)
     
     
 #__main__
