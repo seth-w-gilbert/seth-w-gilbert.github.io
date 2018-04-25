@@ -44,12 +44,12 @@ def squareClick(event):
     y = int(square.dataset.y)
     populated = square.dataset.populated == "True"
     
-    console.log(str(boardRep[y][x]))
-    console.log('populated: ' + str(populated))
-    alert(f'({x:d}, {y:d})')
+    if(!populated):
+        alert('not populated')
     
-    console.log(square.dataset)
-    
+    #console.log(str(boardRep[y][x]))
+    #console.log('populated: ' + str(populated))
+    #alert(f'({x:d}, {y:d})')
     
 #__main__
 
