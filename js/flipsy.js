@@ -352,8 +352,7 @@ function makeMoveDeep(){
     var move = child.lastPlay;
     
     console.log(move.x + ", " + move.y);
-    
-    
+
     //make the move.
     var square = document.querySelector('[data-x="' + move.x + '"][data-y="' + move.y + '"]');
     boardRep[move.y][move.x] = 'w';
@@ -375,12 +374,12 @@ function makeMoveDeep(){
     }
 }
 
-//aesthetic updates.
+//aesthetics
 function updateScores(){
     document.getElementById('white-score').innerHTML = document.getElementById('white-score').innerHTML.replace(/\d+/, whiteCount);
     document.getElementById('black-score').innerHTML = document.getElementById('black-score').innerHTML.replace(/\d+/, blackCount);
 }
 
 function updateTurn(){
-    document.getElementById('turn-indic').innerHTML = document.getElementById('turn-indic').innerHTML.replace(/(.*)(?= Turn)/, isWhiteTurn ? "White's" : "Black's");
+    document.getElementById('turn-indic').innerHTML = document.getElementById('turn-indic').innerHTML.replace(/(.*)(?= Turn)/, isWhiteTurn ? "Computer's" : "Your");
 }
