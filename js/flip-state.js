@@ -88,15 +88,30 @@ function FlipState(b){
     //from there a win can be decided.
     //fix these three methods.
     this.isComputerWinner = function(){
-      return !this.hasMoreChildren() && (this.staticEvaluation() > 0);
+        hasMoves1 = this.hasMoreChildren();
+        var switched = new FlipState(this.board);
+        switched.whitePlayed = !this.whitePlayed;
+        hasMoves2 = switched.hasMoreChildren();
+        return !(hasMoves1 || hasMoves2) && (this.staticEvaluation() > 0)
+//      return !this.hasMoreChildren() && (this.staticEvaluation() > 0);
     }
 
     this.isUserWinner = function(){
-      return !this.hasMoreChildren() && (this.staticEvaluation < 0);
+        hasMoves1 = this.hasMoreChildren();
+        var switched = new FlipState(this.board);
+        switched.whitePlayed = !this.whitePlayed;
+        hasMoves2 = switched.hasMoreChildren();
+        return !(hasMoves1 || hasMoves2) && (this.staticEvaluation() < 0)
+//        return !this.hasMoreChildren() && (this.staticEvaluation < 0);
     }
 
     this.isDraw = function(){
-      return !this.hasMoreChildren() && this.staticEvaluation == 0;
+        hasMoves1 = this.hasMoreChildren();
+        var switched = new FlipState(this.board);
+        switched.whitePlayed = !this.whitePlayed;
+        hasMoves2 = switched.hasMoreChildren();
+        return !(hasMoves1 || hasMoves2) && (this.staticEvaluation() == 0)
+//      return !this.hasMoreChildren() && this.staticEvaluation == 0;
     }
 
     //helper function
