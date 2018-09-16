@@ -3,7 +3,8 @@
 <head>
     <script src="js/navbar.js"></script>
     <script src="js/reading.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="styles/css/style.css">
+    <link rel="stylesheet" href="styles/css/reading.css">
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -13,23 +14,43 @@
         document.body.appendChild(navbar);
         addSelected("reading");
     </script>
-    <h1>Reading List Page</h1>
-    
+	<div class="heading">
+		<h1>Reading List</h1>
+		<p>This is a list of the books that I have read, along with some quick thoughts on each of them.  This is here mostly for my own benefit, so I can keep track of my reading history, but I hope you can find it helpful as well. If you disagree with my ratings or want to discuss books, you can email me at seth.gilbert1@gmail.com with the subject "Reading List."</p>
+	</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Rating (X/20)</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody id="read-books-slot">
+<!--            this is where the books read from csv will show.-->
+        </tbody>
+    </table>
+
     <script>
         $.get({
-            url: "files/books.csv",
+            url: "https://seth-w-gilbert.github.io/files/books.csv",
             type: "GET",
             dataType: 'text',
-            success: function(data){
+            success: function(data) {
                 lines = data.split('\n');
-                lines.forEach(function(line){
-                    tokens = line.split(',');
-                    createBook(tokens[0], tokens[1], tokens[2]);
+                lines.forEach(function(line) {
+                    tokens = line.split('\t');
+                    createBook(tokens);
                 });
+            },
+            error: function(err){
+                alert("Error reading book list.");
+                window.location = "https://seth-w-gilbert.github.io";
             }
         });
         
-    
     </script>
 </body>
 </html>
