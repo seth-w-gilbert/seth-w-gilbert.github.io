@@ -370,7 +370,19 @@ function makeMoveDeep(){
     updateTurn();
     
     if(!(canMove(isWhiteTurn) || canMove(!isWhiteTurn))){
-        alert('game over');
+		
+		//TODO add blinking
+        document.getElementById('turn-indic').innerHTML = "Game Over! ";
+		var userWin = blackCount > whiteCount;
+		if(userWin){
+			document.getElementById('turn-indic').innerHTML += "You Win!";
+		} else {
+			if(blackCount == whiteCount) {
+				document.getElementById('turn-indic').innerHTML = "It's a tie!";
+			} else {
+				document.getElementById('turn-indic').innerHTML = "You lose :(";
+			}
+		}
     }
 }
 
@@ -381,5 +393,5 @@ function updateScores(){
 }
 
 function updateTurn(){
-    document.getElementById('turn-indic').innerHTML = document.getElementById('turn-indic').innerHTML.replace(/(.*)(?= Turn)/, isWhiteTurn ? "Computer's" : "Your");
+    document.getElementById('turn-indic').innerHTML = isWhiteTurn ? "<- Computer's Turn" : "Your Turn ->";
 }

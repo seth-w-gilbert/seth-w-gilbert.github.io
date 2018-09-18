@@ -46,6 +46,52 @@ body {
     background-color: rgba(255,255,255,0.05);
 }
 
+.score-section {
+	margin: 10px 10px 300px 10px;
+	padding: 10px;
+	background-color: darkslategray;
+	color: white;
+	font-family: Courier New, sans-serif;
+	border: 3px outset darkslategray;
+	text-align: center;
+}
+
+.score-section > .points {
+	background-color: #2d2d2d;
+	height: 170px;
+	font-size: 10em;
+	font-weight: bold;
+	border: 3px white solid;
+}
+
+.score-section > h3 {
+	font-size: 2em;
+}
+
+#turn-indic {
+	background-color: darkslategray;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	border: 3px outset darkslategray;
+}
+
+#rules {
+	margin: 5px 5%;
+	padding: 20px 3%;
+	background-color: darkslateblue;
+	border-radius: 5px;
+	border: 3px outset darkslateblue;
+}
+
+#rules > div {
+	background-color: lightgray;
+	border-radius: 5px;
+	padding: 1px 10px;
+	margin-bottom: 10px;
+	border: 3px groove darkgray;
+}
+
 .game-square{
     position: relative;
     background-color: gray;
@@ -56,8 +102,6 @@ body {
     box-sizing: border-box;
 }
 
-
-
 .game-square:after {
     content: "";
     display: block;
@@ -67,11 +111,13 @@ body {
 .piece-white {
     background-color: white;
     border: 3px lightcyan outset;
+
 }
 
 .piece-black {
     background-color: black;
     border: 3px darkslategray outset;
+
 }
 
 .game-piece {
@@ -99,16 +145,6 @@ body {
     display: grid;
     grid-template-columns: 20% 60% 20%;
     grid-template-rows: auto;
-}
-
-.book-review {
-    background-color: lightsteelblue;
-    border-radius: 3px;
-    margin: 2%;
-    border: solid black 1px;
-}
-.book-review > span {
-    padding-left: 2%;
 }
 
 @media only screen and (min-width: 912px) {

@@ -19,23 +19,34 @@
     <div class="grid-container">
 
 <!--        left column-->
-        <div style="padding:10px;">
+        <div class="score-section">
             <h3>AI Score (White)</h3>
-            <h1 id="white-score">2</h1>
+			<div class="points" id="white-score">2</div>
         </div>
 
 <!--        center column-->
         <div>
             <div id="game-board"></div>
-            <h4 id="turn-indic">Your Turn</h4>
+            <h4 id="turn-indic">Your Turn -></h4>
         </div>
 
 <!--        right column-->
-        <div style="text-align:right;padding:10px;">
+        <div class="score-section" style="text-align:right;">
             <h3>Your Score (Black)</h3>
-            <h1 id="black-score">2</h1>
+            <div class="points" id="black-score">2</div>
         </div>
     </div>
+	
+	<div id="rules">
+		<div>
+			<h2>Basic Rules</h2>
+		</div>
+		<div>
+			<p>Flips may seem familiar, since it is based off the popular game Othello.  The Goal is to have more pieces that are your color on the board at the end than your opponent. To place a move, you must surround a row, either vertical, horizontal, or diagonal, of your opponents pieces with two of your own.  Doing this will allow you to flip those surrounded pieces into your color.</p>
+			
+			<p>Remember, you are playing a computer, so there may be some awkward interractions due to lack of communication. For example, the computer might play twice in a row. At first this might seem unfair, but it probably just recognized that you did not have any legal moves, therefore it really was the computer's turn twice in a row. If you have any interractions that you don't understand, check out this link for instructions: <a href="https://www.wikihow.com/Play-Othello">https://www.wikihow.com/Play-Othello</a>.  There are even tips on that site that can help you beat the computer! If after reading the rules you still encounter a confusing situation, feel free to email me at seth.gilbert1@gmail.com with the subject "Issues with Flips."</p>
+		</div>
+	</div>
 
 </body>
 <script>
