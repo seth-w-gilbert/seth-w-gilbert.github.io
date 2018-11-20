@@ -86,6 +86,5 @@ def populate(square, isBlack):
     square <= piece
     
 #__main__
-
 #set things in motion.
 createBoard()

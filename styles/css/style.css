@@ -30,7 +30,7 @@ body {
 .navContainer {
     width: 100%;
     display: inline-flex;
-    background-color: darkslateblue;
+    background-color: #247BA0;
     color: white;
 }
 #title {
@@ -50,15 +50,15 @@ body {
 	margin: 10px 10px 0px 10px;
 	padding: 10px;
 	height: 300px;
-	background-color: darkslategray;
+	background-color: #FF1654;
 	color: white;
 	font-family: Courier New, sans-serif;
-	border: 3px outset darkslategray;
+	border: 3px outset #FF1654;
 	text-align: center;
 }
 
 .score-section > .points {
-	background-color: #2d2d2d;
+	background-color: #247BA0;
 	height: 170px;
 	font-size: 10em;
 	font-weight: bold;
@@ -71,27 +71,27 @@ body {
 }
 
 #turn-indic {
-	background-color: darkslategray;
+	background-color: #247BA0;
 	color: white;
 	padding: 5px;
 	text-align: center;
-	border: 3px outset darkslategray;
+	border: 3px outset #247BA0;
 }
 
 #rules {
 	margin: 5px 5%;
 	padding: 20px 3%;
-	background-color: darkslateblue;
+	background-color: #247BA0;
 	border-radius: 5px;
-	border: 3px outset darkslateblue;
+	border: 3px outset #247BA0;
 }
 
 #rules > div {
-	background-color: lightgray;
+	background-color: #F3FFB9;
 	border-radius: 5px;
 	padding: 1px 10px;
 	margin-bottom: 10px;
-	border: 3px groove darkgray;
+	border: 3px groove #F3FFB9;
 }
 
 .game-square{
