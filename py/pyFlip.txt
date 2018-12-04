@@ -43,9 +43,10 @@ def squareClick(event):
     x = int(square.dataset.x)
     y = int(square.dataset.y)
     populated = square.dataset.populated == "true"
-    console.log(populated)
     
-    if(not populated):
+    tiles = isValidMove(x,y,'b')
+    if(not populated and tiles != False):
+		# TODO flip the tiles.
         populate(square, isBlack=True)
         makeMove()
 
@@ -57,7 +58,7 @@ def makeMove():
     while not found and i < 8:
         j = 0
         while not found and j < 8:
-            if boardRep[i][j] == '':
+            if boardRep[i][j] == '' and isValidMove(j, i, 'w'):
                 found = True
             else:
                 j += 1
@@ -83,7 +84,62 @@ def populate(square, isBlack):
         piece.classList.add('piece-white')
         boardRep[y][x] = 'w'
     
+	#insert piece into square.
     square <= piece
+	
+#returns an array of indices of tiles to flip.
+def isValidMove(xstart, ystart, color):
+	global boardRep
+	
+	otherColor = 'w'
+	if color == 'w':
+		otherColor = 'b'
+			
+	tilesToFlip = [];
+	#								down	up		right	left	diags
+	for xdirection, ydirection in [[0,1], [0,-1], [1,0], [-1,0], [1,1], [-1,-1], [1,-1], [-1,1]]:
+		x,y = xstart, ystart
+		x += xdirection
+		y += ydirection
+				
+		r = range(8)
+		if(x in r and y in r and boardRep[y][x] == otherColor):
+			#the first piece is opposite color. potential to flip.
+			console.log("potential to flip")
+			console.log(x)
+			console.log(y)
+			x += xdirection
+			y += ydirection
+			
+			while(x in r and y in r and boardRep[y][x] == otherColor):
+				#the next piece over is good, move on
+				x += xdirection
+				y += ydirection
+				
+			#either reached edge, empty, or our own color.
+			if x in r and y in r and boardRep[y][x] == color:
+				#reached another of our color.  add pieces to flip.
+				console.log("reached one of us. Can Flip!")
+				console.log(x)
+				console.log(y)
+				x -= xdirection
+				y -= ydirection
+				while not(x == xstart and y == ystart):
+					tilesToFlip.append([x,y])
+					x -= xdirection
+					y -= ydirection
+	
+	# after all directions have been checked.
+	if len(tilesToFlip) == 0:
+		return False
+	else:
+		return tilesToFlip
+# end of isValidMove
+					
+				
+				
+			
+			
     
 #__main__
 #set things in motion.
