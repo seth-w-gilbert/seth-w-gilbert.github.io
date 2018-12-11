@@ -1,5 +1,4 @@
 from browser import document, html, alert, console, timer
-import minimax
 
 boardRep = [['','','','','','','',''],
             ['','','','','','','',''],
