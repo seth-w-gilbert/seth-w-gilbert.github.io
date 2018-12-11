@@ -266,7 +266,6 @@ function flipBetween(whiteTurn, x, y, isTest){
 
 function flipOne(color, x, y){
     var square = document.querySelector('[data-x="' + x + '"][data-y="' + y + '"]');
-    var prevChar = boardRep[y][x];
     boardRep[y][x] = color;
     var piece = square.childNodes[0];
     

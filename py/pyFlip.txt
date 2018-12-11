@@ -1,4 +1,5 @@
-from browser import document, html, alert, console
+from browser import document, html, alert, console, timer
+import minimax
 
 boardRep = [['','','','','','','',''],
             ['','','','','','','',''],
@@ -9,27 +10,24 @@ boardRep = [['','','','','','','',''],
             ['','','','','','','',''],
             ['','','','','','','','']]
 
-whiteTurn = False
-
-
 def createBoard():
     global boardRep
     boardDiv = document["game-board-py"]
     
     for i in range(0, 8):
-        
+
         for j in range(0, 8):
             square = html.DIV(Class="game-square")
             square.setAttribute("data-x", j)
             square.setAttribute("data-y", i)
-            
+
             populated = bool(boardRep[i][j])
             if(populated):
                 isBlack = boardRep[i][j] == 'b'
                 populate(square, isBlack)
             else:
                 square.setAttribute('data-populated', False)
-            
+
             square.bind("click", squareClick)
             boardDiv <= square
             
@@ -38,27 +36,57 @@ def squareClick(event):
     # TODO if not populated, place piece, depending on whose turn it is.
     #global variables
     global whiteTurn
-
-    square = event.currentTarget
-    x = int(square.dataset.x)
-    y = int(square.dataset.y)
-    populated = square.dataset.populated == "true"
     
-    tiles = isValidMove(x,y,'b')
-    if(not populated and tiles != False):
-		# TODO flip the tiles.
-        populate(square, isBlack=True)
-        makeMove()
+    if(not whiteTurn):
+        square = event.currentTarget
+        x = int(square.dataset.x)
+        y = int(square.dataset.y)
+        populated = square.dataset.populated == "true"
 
+        tiles = isValidMove(x,y,'b')
+        if(not populated and tiles != False):
+            # TODO flip the tiles.
+            for x,y in tiles:
+                flip('b', x, y)
 
-def makeMove():
-    # find the location of the correct available move.
+            populate(square, isBlack=True)
+            
+            #verify white can move.  otherwise it is black turn again
+            found = canMove('w')
+            
+            if(found):      
+                timer.set_timeout(makeMove, 1500)
+            else:
+                console.log("white cannot move. Black Turn again.")
+                whiteTurn = not whiteTurn
+
+                
+def canMove(color):
+    #verify color can move.
     found = False
     i = 0
+    while i < 8 and not found:
+        j = 0
+        while j < 8 and not found:
+            found = isValidMove(i, j, color)
+            j += 1
+        i += 1
+        
+    return found #there is a move available for that color.
+
+def makeMove():
+    global whiteTurn
+    # TODO find the location of the correct available move.
+    
+    #sayHi()
+    found = False
+    i = 0
+    flips = []
     while not found and i < 8:
         j = 0
         while not found and j < 8:
-            if boardRep[i][j] == '' and isValidMove(j, i, 'w'):
+            flips = isValidMove(j, i, 'w')
+            if boardRep[i][j] == '' and flips:
                 found = True
             else:
                 j += 1
@@ -66,12 +94,24 @@ def makeMove():
             i += 1
 
     # populate that location.
+    for x,y in flips:
+        #console.log(x,y)
+        flip('w', x, y)
+    
     square = document.querySelector('[data-x="' + str(j) + '"][data-y="' + str(i) + '"]')
     populate(square, isBlack=False)
+    
+    found = canMove('b')
+    if not found:
+        console.log('black cannot make a move.  White turn.')
+        # make another move.
+        whiteTurn = not whiteTurn
+        timer.set_timeout(makeMove, 1500)
 
 
 def populate(square, isBlack):
-    global boardRep
+    global boardRep, whiteTurn
+    whiteTurn = not whiteTurn
     square.setAttribute('data-populated', True)
     square.style={"cursor":"default"}
     x = int(square.dataset.x)
@@ -84,63 +124,69 @@ def populate(square, isBlack):
         piece.classList.add('piece-white')
         boardRep[y][x] = 'w'
     
-	#insert piece into square.
+    #insert piece into square.
     square <= piece
-	
+    
 #returns an array of indices of tiles to flip.
 def isValidMove(xstart, ystart, color):
-	global boardRep
-	
-	otherColor = 'w'
-	if color == 'w':
-		otherColor = 'b'
-			
-	tilesToFlip = [];
-	#								down	up		right	left	diags
-	for xdirection, ydirection in [[0,1], [0,-1], [1,0], [-1,0], [1,1], [-1,-1], [1,-1], [-1,1]]:
-		x,y = xstart, ystart
-		x += xdirection
-		y += ydirection
-				
-		r = range(8)
-		if(x in r and y in r and boardRep[y][x] == otherColor):
-			#the first piece is opposite color. potential to flip.
-			console.log("potential to flip")
-			console.log(x)
-			console.log(y)
-			x += xdirection
-			y += ydirection
-			
-			while(x in r and y in r and boardRep[y][x] == otherColor):
-				#the next piece over is good, move on
-				x += xdirection
-				y += ydirection
-				
-			#either reached edge, empty, or our own color.
-			if x in r and y in r and boardRep[y][x] == color:
-				#reached another of our color.  add pieces to flip.
-				console.log("reached one of us. Can Flip!")
-				console.log(x)
-				console.log(y)
-				x -= xdirection
-				y -= ydirection
-				while not(x == xstart and y == ystart):
-					tilesToFlip.append([x,y])
-					x -= xdirection
-					y -= ydirection
-	
-	# after all directions have been checked.
-	if len(tilesToFlip) == 0:
-		return False
-	else:
-		return tilesToFlip
-# end of isValidMove
-					
-				
-				
-			
-			
+    global boardRep
     
+    if(not boardRep[ystart][xstart] == ''):
+        return False
+    
+    otherColor = 'w'
+    if color == 'w':
+        otherColor = 'b'
+            
+    tilesToFlip = [];
+    #                                down    up        right    left    diags
+    for xdirection, ydirection in [[0,1], [0,-1], [1,0], [-1,0], [1,1], [-1,-1], [1,-1], [-1,1]]:
+        x,y = xstart, ystart
+        x += xdirection
+        y += ydirection
+                
+        r = range(8)
+        if(x in r and y in r and boardRep[y][x] == otherColor):
+            #the first piece is opposite color. potential to flip.
+            x += xdirection
+            y += ydirection
+            
+            while(x in r and y in r and boardRep[y][x] == otherColor):
+                #the next piece over is good, move on
+                x += xdirection
+                y += ydirection
+                
+            #either reached edge, empty, or our own color.
+            if x in r and y in r and boardRep[y][x] == color:
+                #reached another of our color.  add pieces to flip.
+                x -= xdirection
+                y -= ydirection
+                while not(x == xstart and y == ystart):
+                    tilesToFlip.append([x,y])
+                    x -= xdirection
+                    y -= ydirection
+    
+    # after all directions have been checked.
+    if len(tilesToFlip) == 0:
+        return False
+    else:
+        return tilesToFlip
+# end of isValidMove
+
+def flip(color, x, y):
+    global boardRep
+    square = document.querySelector('[data-x="' + str(x) + '"][data-y="' + str(y) + '"]')
+    piece = square.select('div.game-piece')[0] #first element is the piece we want.
+    boardRep[y][x] = color
+    
+    if(color == 'w'):
+        piece.classList.remove('piece-black')
+        piece.classList.add('piece-white')
+    else:
+        piece.classList.remove('piece-white')
+        piece.classList.add('piece-black')
+                    
+                
 #__main__
 #set things in motion.
 createBoard()
